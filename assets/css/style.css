@@ -5,6 +5,7 @@
     margin: 0;
     padding: 0;
     font-family: 'Poppins';
+    font-weight: 500;
 }
 
 html , body {
@@ -19,14 +20,14 @@ html , body {
     margin: 0 !important;
 }
 .fixed-top {
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.5);
     transition: all 0.5s;
 }
 /* Navbar end*/
 /* Hero */
 #hero {
-    min-height: 80vh;
-    position: relative;
+    min-height: 100vh;
+    position: relative; 
 }
 #hero::before {
     content: "";
@@ -36,12 +37,19 @@ html , body {
     background-image:url('../img/hero.webp');
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center 10%;
-    opacity: 0.1;
+    background-position: center 20px;
+    opacity: 0.3;
     z-index: -1;
     box-sizing: border-box;
+    transition: all 0.3s;
 }
 #hero:hover::before {
     opacity: 0.5;
+}
+
+.hero {
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }
 /* Hero end*/
