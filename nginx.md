@@ -1,4 +1,4 @@
-# Dokumentasi Penginstalan Nginx dan PHPMyAdmin dengan Ekstensi yang Dibutuhkan
+# Dokumentasi Penginstalan Nginx dan PHPMyAdmin dengan Ekstensi yang Dibutuhkan Untuk Ubuntu Sever
 
 ## Prasyarat
 
