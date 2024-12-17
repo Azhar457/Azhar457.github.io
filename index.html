@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Daftar Direktori dan File</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+      li {
+        margin: 5px 0;
+      }
+      a {
+        text-decoration: none;
+        color: blue;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+    <script>
+      async function loadDirectory(path = "") {
+        const repo = "Azhar457/Azhar457.github.io"; // Ganti dengan nama repository Anda
+        const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
+
+        try {
+          const response = await fetch(apiUrl);
+          const items = await response.json();
+
+          const listContainer = document.getElementById("file-list");
+          listContainer.innerHTML = ""; // Kosongkan daftar sebelum menambah yang baru
+
+          if (path) {
+            // Tambahkan link untuk kembali ke direktori sebelumnya
+            const parentPath = path.split("/").slice(0, -1).join("/");
+            const li = document.createElement("li");
+            li.innerHTML = `<a href="#" onclick="loadDirectory('${parentPath}')">⬅️ ..</a>`;
+            listContainer.appendChild(li);
+          }
+
+          // Tambahkan setiap file dan folder
+          items.forEach((item) => {
+            const li = document.createElement("li");
+            if (item.type === "dir") {
+              li.innerHTML = `<a href="#" onclick="loadDirectory('${item.path}')">📁 ${item.name}</a>`;
+            } else {
+              li.innerHTML = `<a href="${item.html_url}" target="_blank">📄 ${item.name}</a>`;
+            }
+            listContainer.appendChild(li);
+          });
+        } catch (error) {
+          console.error("Error fetching directory:", error);
+          alert("Gagal memuat direktori.");
+        }
+      }
+
+      window.onload = () => loadDirectory(); // Muat direktori root saat halaman pertama dibuka
+    </script>
+  </head>
+  <body>
+    <h1>📂 Daftar Direktori dan File</h1>
+    <ul id="file-list"></ul>
+  </body>
+</html>
