@@ -130,3 +130,7 @@ Berikut adalah daftar ekstensi PHP yang telah diinstal dan dibutuhkan untuk menj
 ---
 
 **Catatan**: Dokumentasi ini ditujukan untuk lingkungan pengembangan lokal. Jangan gunakan konfigurasi ini untuk produksi tanpa penyesuaian keamanan tambahan.
+![Gambar WhatsApp 2024-12-16 pukul 16 40 51_bd0898bb](https://github.com/user-attachments/assets/5965eca5-6fe8-4499-970e-79bbb17181c4)
+
+
+
