@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Input Data Kartu Keluarga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md">
+      <div class="flex items-center mb-6">
+        <div class="bg-blue-100 p-3 rounded-full mr-4">
+          <svg
+            class="w-6 h-6 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+            ></path>
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-2xl font-semibold text-gray-700">
+            Form Input Data Kartu Keluarga (KK)
+          </h2>
+          <p class="text-gray-500 text-sm">
+            Lengkapi data alamat dan identitas kartu keluarga
+          </p>
+        </div>
+      </div>
+
+      <form action="#" method="POST" class="space-y-6">
+        <!-- Section 1: Data Utama KK -->
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-lg font-medium text-gray-700 mb-4 flex items-center">
+            <span
+              class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-2"
+              >1</span
+            >
+            Data Utama Kartu Keluarga
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- No KK -->
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Nomor Kartu Keluarga (KK) <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="no_kk"
+                maxlength="20"
+                placeholder="Contoh: 3201234567890123"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+              <p class="text-xs text-gray-500 mt-1">
+                16 digit nomor KK sesuai dokumen resmi
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Alamat Lengkap -->
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-lg font-medium text-gray-700 mb-4 flex items-center">
+            <span
+              class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-2"
+              >2</span
+            >
+            Alamat Lengkap
+          </h3>
+
+          <div class="space-y-4">
+            <!-- Alamat Detail -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Alamat Lengkap <span class="text-red-500">*</span>
+              </label>
+              <textarea
+                name="alamat"
+                rows="3"
+                placeholder="Contoh: Jl. Merdeka No. 123, Perumahan Griya Asri Blok A-12"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                required
+              ></textarea>
+              <p class="text-xs text-gray-500 mt-1">
+                Tulis alamat lengkap termasuk nama jalan, nomor rumah,
+                kompleks/perumahan
+              </p>
+            </div>
+
+            <!-- RT & RW -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  RT <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="rt"
+                  maxlength="5"
+                  placeholder="001"
+                  class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  RW <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="rw"
+                  maxlength="5"
+                  placeholder="005"
+                  class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Wilayah Administratif -->
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-lg font-medium text-gray-700 mb-4 flex items-center">
+            <span
+              class="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-2"
+              >3</span
+            >
+            Wilayah Administratif
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Kelurahan -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Kelurahan/Desa <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="kelurahan"
+                maxlength="50"
+                placeholder="Contoh: Kelurahan Merdeka"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+
+            <!-- Kecamatan -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Kecamatan <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="kecamatan"
+                maxlength="50"
+                placeholder="Contoh: Kecamatan Bandung Wetan"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+
+            <!-- Kabupaten -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Kabupaten/Kota <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="kabupaten"
+                maxlength="50"
+                placeholder="Contoh: Kota Bandung"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+
+            <!-- Provinsi -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Provinsi <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="provinsi"
+                maxlength="50"
+                placeholder="Contoh: Jawa Barat"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+
+            <!-- Kode Pos -->
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Kode Pos
+              </label>
+              <input
+                type="text"
+                name="kode_pos"
+                maxlength="10"
+                placeholder="40123"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              />
+              <p class="text-xs text-gray-500 mt-1">
+                5 digit kode pos sesuai wilayah
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-6">
+          <button
+            type="button"
+            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg shadow hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-200"
+          >
+            <svg
+              class="w-4 h-4 inline mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+            Batal
+          </button>
+
+          <button
+            type="reset"
+            class="flex-1 px-4 py-2 border border-yellow-300 text-yellow-700 bg-yellow-50 rounded-lg shadow hover:bg-yellow-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition duration-200"
+          >
+            <svg
+              class="w-4 h-4 inline mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              ></path>
+            </svg>
+            Reset Form
+          </button>
+
+          <button
+            type="submit"
+            class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+          >
+            <svg
+              class="w-4 h-4 inline mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+            Simpan Data KK
+          </button>
+        </div>
+
+        <!-- Info Footer -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mt-6">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg
+                class="h-5 w-5 text-blue-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-blue-700">
+                <strong>Catatan:</strong> Data yang Anda masukkan akan digunakan
+                untuk keperluan administrasi RT/RW. Pastikan semua informasi
+                sesuai dengan dokumen resmi Kartu Keluarga.
+              </p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- JavaScript untuk validasi dan UX -->
+    <script>
+      // Auto format RT/RW dengan leading zero
+      document
+        .querySelector('input[name="rt"]')
+        .addEventListener("input", function (e) {
+          let value = e.target.value.replace(/\D/g, "");
+          if (value.length > 0) {
+            e.target.value = value.padStart(3, "0");
+          }
+        });
+
+      document
+        .querySelector('input[name="rw"]')
+        .addEventListener("input", function (e) {
+          let value = e.target.value.replace(/\D/g, "");
+          if (value.length > 0) {
+            e.target.value = value.padStart(3, "0");
+          }
+        });
+
+      // Validasi No KK (hanya angka, 16 digit)
+      document
+        .querySelector('input[name="no_kk"]')
+        .addEventListener("input", function (e) {
+          let value = e.target.value.replace(/\D/g, "");
+          e.target.value = value.substring(0, 16);
+        });
+
+      // Validasi Kode Pos (hanya angka, 5 digit)
+      document
+        .querySelector('input[name="kode_pos"]')
+        .addEventListener("input", function (e) {
+          let value = e.target.value.replace(/\D/g, "");
+          e.target.value = value.substring(0, 5);
+        });
+
+      // Form validation
+      document.querySelector("form").addEventListener("submit", function (e) {
+        const noKK = document.querySelector('input[name="no_kk"]').value;
+        if (noKK.length !== 16) {
+          e.preventDefault();
+          alert("Nomor KK harus 16 digit!");
+          return false;
+        }
+      });
+    </script>
+  </body>
+</html>

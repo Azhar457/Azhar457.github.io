@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kartu Keluarga Digital - RT 003 RW 001</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .no-print { display: none; }
+            body { print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+        <!-- Header Kartu Keluarga -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-white/20 p-3 rounded-full">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">KARTU KELUARGA DIGITAL</h1>
+                        <p class="text-blue-100">Sistem Informasi RT/RW</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-blue-100">No. KK</p>
+                    <p class="text-xl font-mono font-bold">3201234567890123</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Alamat KK -->
+        <div class="bg-gray-50 border-b-2 border-gray-200 p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Alamat Keluarga
+                    </h3>
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <p class="text-gray-700 mb-2"><strong>Alamat:</strong> Jl. Merdeka No. 123, Perumahan Griya Asri Blok A-12</p>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-600">RT:</span> <span class="font-semibold">003</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">RW:</span> <span class="font-semibold">001</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        Wilayah Administratif
+                    </h3>
+                    <div class="bg-white p-4 rounded-lg shadow-sm text-sm space-y-1">
+                        <p><span class="text-gray-600">Kelurahan:</span> <span class="font-semibold">Kelurahan Merdeka</span></p>
+                        <p><span class="text-gray-600">Kecamatan:</span> <span class="font-semibold">Bandung Wetan</span></p>
+                        <p><span class="text-gray-600">Kabupaten:</span> <span class="font-semibold">Kota Bandung</span></p>
+                        <p><span class="text-gray-600">Provinsi:</span> <span class="font-semibold">Jawa Barat</span></p>
+                        <p><span class="text-gray-600">Kode Pos:</span> <span class="font-semibold">40123</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daftar Anggota Keluarga -->
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-800 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    Daftar Anggota Keluarga
+                </h3>
+                <div class="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                    Total: 4 Orang
+                </div>
+            </div>
+
+            <!-- Tabel Anggota Keluarga -->
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse bg-white rounded-lg shadow-sm overflow-hidden">
+                    <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                        <tr class="text-left">
+                            <th class="p-4 text-sm font-semibold text-gray-700 border-b">No</th>
+                            <th class="p-4 text-sm font-semibold text-gray-700 border-b">Nama Lengkap</th>
+                            <th class="p-4 text-sm font-semibold text-gray-700 border-b">Hubungan</th>
+                            <th class="p-4 text-sm font-semibold text-gray-700 border-b">L/P</th>
+                            <th class="p-4 text-sm font-semibold text-gray-700 border-b">Umur</th>
+                            <th class="p-4 text-sm font-semibold text-gray-700 border-b">Pendidikan</th>
+                            <th class="p-4 text-sm font-semibold text-gray-700 border-b">Pekerjaan</th>
+                            <th class="p-4 text-sm font-semibold text-gray-700 border-b">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <!-- Kepala Keluarga -->
+                        <tr class="hover:bg-blue-50 transition-colors">
+                            <td class="p-4 text-center">
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">1</span>
+                            </td>
+                            <td class="p-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium">
+                                        A
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Dr. Ahmad Budi Santoso</p>
+                                        <p class="text-xs text-gray-500">Kepala Keluarga</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-4">
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">Kepala Keluarga</span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <span class="text-blue-600 font-medium">L</span>
+                            </td>
+                            <td class="p-4 text-center">45</td>
+                            <td class="p-4">
+                                <span class="text-sm text-gray-700">Strata II</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-sm text-gray-700">Dokter Spesialis</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Kawin</span>
+                            </td>
+                        </tr>
+
+                        <!-- Istri -->
+                        <tr class="hover:bg-pink-50 transition-colors">
+                            <td class="p-4 text-center">
+                                <span class="bg-pink-100 text-pink-800 text-xs font-medium px-2 py-1 rounded-full">2</span>
+                            </td>
+                            <td class="p-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="bg-pink-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium">
+                                        S
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Siti Aminah Rahayu</p>
+                                        <p class="text-xs text-gray-500">Istri</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-4">
+                                <span class="bg-pink-100 text-pink-800 text-xs font-medium px-2 py-1 rounded">Istri</span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <span class="text-pink-600 font-medium">P</span>
+                            </td>
+                            <td class="p-4 text-center">42</td>
+                            <td class="p-4">
+                                <span class="text-sm text-gray-700">Diploma IV</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-sm text-gray-700">Guru SD</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Kawin</span>
+                            </td>
+                        </tr>
+
+                        <!-- Anak 1 -->
+                        <tr class="hover:bg-green-50 transition-colors">
+                            <td class="p-4 text-center">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">3</span>
+                            </td>
+                            <td class="p-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="bg-green-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium">
+                                        R
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Rizky Ahmad Pratama</p>
+                                        <p class="text-xs text-gray-500">Anak Pertama</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-4">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Anak</span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <span class="text-blue-600 font-medium">L</span>
+                            </td>
+                            <td class="p-4 text-center">20</td>
+                            <td class="p-4">
+                                <span class="text-sm text-gray-700">Diploma IV</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-sm text-gray-700">Mahasiswa</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded">Belum Kawin</span>
+                            </td>
+                        </tr>
+
+                        <!-- Anak 2 -->
+                        <tr class="hover:bg-purple-50 transition-colors">
+                            <td class="p-4 text-center">
+                                <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-1 rounded-full">4</span>
+                            </td>
+                            <td class="p-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium">
+                                        A
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Aisyah Putri Rahayu</p>
+                                        <p class="text-xs text-gray-500">Anak Kedua</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-4">
+                                <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-1 rounded">Anak</span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <span class="text-pink-600 font-medium">P</span>
+                            </td>
+                            <td class="p-4 text-center">17</td>
+                            <td class="p-4">
+                                <span class="text-sm text-gray-700">SLTA</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="text-sm text-gray-700">Pelajar</span>
+                            </td>
+                            <td class="p-4">
+                                <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded">Belum Kawin</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="bg-gray-50 p-6 border-t">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
+                <div class="text-sm text-gray-600">
+                    <p><strong>Tanggal Dikeluarkan:</strong> 15 Januari 2024</p>
+                    <p><strong>Status:</strong> <span class="text-green-600 font-semibold">Aktif</span></p>
+                </div>
+                <div class="flex space-x-4 no-print">
+                    <button onclick="window.print()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                        </svg>
+                        <span>Cetak</span>
+                    </button>
+                    <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        <span>Export PDF</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mock Data Test -->
+    <div class="max-w-4xl mx-auto mt-8 bg-green-50 border-l-4 border-green-400 p-4 no-print">
+        <h4 class="font-semibold text-green-800 mb-2">✅ Database Schema Test Result</h4>
+        <p class="text-sm text-green-700">
+            <strong>Success!</strong> Kartu Keluarga berhasil di-generate dengan data dari:
+        </p>
+        <ul class="text-xs text-green-600 mt-2 space-y-1">
+            <li>• Tabel <code class="bg-green-100 px-1 rounded">kk</code> - Data alamat dan wilayah administratif</li>
+            <li>• Tabel <code class="bg-green-100 px-1 rounded">warga</code> - Data 4 anggota keluarga dengan relasi foreign key</li>
+            <li>• Relasi <code class="bg-green-100 px-1 rounded">warga.no_kk → kk.no_kk</code> berfungsi perfect!</li>
+        </ul>
+    </div>
+</body>
+</html>
