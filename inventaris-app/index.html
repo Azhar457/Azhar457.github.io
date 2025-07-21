@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Barang Rongsokan</title>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold mb-6 text-center">
+        📦 Data Barang Rongsokan
+      </h1>
+
+      <!-- Search Bar -->
+      <div class="mb-4 flex justify-between items-center">
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Cari nama atau kategori..."
+          class="w-full md:w-1/2 p-2 border rounded shadow-sm"
+          oninput="renderTable()"
+        />
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto rounded shadow bg-white">
+        <table class="min-w-full text-sm text-left">
+          <thead class="bg-gray-200 text-gray-600 uppercase text-xs">
+            <tr>
+              <th class="px-4 py-3">No</th>
+              <th class="px-4 py-3">Nama Barang</th>
+              <th class="px-4 py-3">Kategori</th>
+              <th class="px-4 py-3">Bagus</th>
+              <th class="px-4 py-3">Kurang</th>
+              <th class="px-4 py-3">Rusak</th>
+              <th class="px-4 py-3">Total</th>
+              <th class="px-4 py-3">Foto</th>
+              <th class="px-4 py-3">Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="dataTable" class="text-gray-700">
+            <!-- data rows will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-6 flex justify-center items-center space-x-2">
+        <button
+          onclick="prevPage()"
+          class="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+          id="prevBtn"
+        >
+          Sebelumnya
+        </button>
+        <span id="pageInfo" class="text-gray-700"></span>
+        <button
+          onclick="nextPage()"
+          class="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+          id="nextBtn"
+        >
+          Berikutnya
+        </button>
+      </div>
+    </div>
+
+    <!-- Script JS bisa kamu pisah nanti -->
+    <script>
+      const SHEET_URL =
+        "https://opensheet.elk.sh/1DGkbjItvUBa6gGnwe16W4z_PcQMwAAdK8HB6pHgtxF4/Sheet1";
+      const ROWS_PER_PAGE = 10;
+      let currentPage = 1;
+      let allData = [];
+
+      async function fetchData() {
+        try {
+          const res = await fetch(SHEET_URL);
+          const data = await res.json();
+          allData = data;
+          renderTable();
+        } catch (error) {
+          console.error("Gagal fetch data:", error);
+        }
+      }
+
+      function renderTable() {
+        const table = document.getElementById("dataTable");
+        const search = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const filtered = allData.filter(
+          (row) =>
+            row["Nama Barang"].toLowerCase().includes(search) ||
+            row["Kategori"].toLowerCase().includes(search)
+        );
+
+        const start = (currentPage - 1) * ROWS_PER_PAGE;
+        const pageData = filtered.slice(start, start + ROWS_PER_PAGE);
+
+        table.innerHTML = pageData
+          .map(
+            (row) => `
+        <tr class="border-b">
+          <td class="px-4 py-2">${row["No"]}</td>
+          <td class="px-4 py-2">${row["Nama Barang"]}</td>
+          <td class="px-4 py-2">${row["Kategori"]}</td>
+          <td class="px-4 py-2">${row["Kondisi Bagus"]}</td>
+          <td class="px-4 py-2">${row["Kondisi Kurang"]}</td>
+          <td class="px-4 py-2">${row["Kondisi Rusak"]}</td>
+          <td class="px-4 py-2">${row["Total"]}</td>
+          <td class="px-4 py-2"><a href="${row["Foto Folder Link"]}" target="_blank" class="text-blue-500 underline">📁 Lihat</a></td>
+          <td class="px-4 py-2">${row["Keterangan"]}</td>
+        </tr>
+      `
+          )
+          .join("");
+
+        document.getElementById(
+          "pageInfo"
+        ).innerText = `Halaman ${currentPage} dari ${Math.ceil(
+          filtered.length / ROWS_PER_PAGE
+        )}`;
+        document.getElementById("prevBtn").disabled = currentPage === 1;
+        document.getElementById("nextBtn").disabled =
+          start + ROWS_PER_PAGE >= filtered.length;
+      }
+
+      function prevPage() {
+        if (currentPage > 1) {
+          currentPage--;
+          renderTable();
+        }
+      }
+
+      function nextPage() {
+        if (currentPage * ROWS_PER_PAGE < allData.length) {
+          currentPage++;
+          renderTable();
+        }
+      }
+
+      fetchData();
+    </script>
+  </body>
+</html>
