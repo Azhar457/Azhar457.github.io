@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Data Barang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 py-10 px-4">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
+      <h2 class="text-2xl font-bold mb-4 text-center">✏️ Edit Data Barang</h2>
+      <form id="editForm" class="space-y-4">
+        <div>
+          <label class="block">Nomor (No)</label>
+          <input
+            name="no"
+            id="no"
+            type="number"
+            readonly
+            class="w-full p-2 border rounded bg-gray-100"
+          />
+        </div>
+        <div>
+          <label class="block">Nama Barang</label>
+          <input
+            name="namaBarang"
+            id="namaBarang"
+            required
+            class="w-full p-2 border rounded"
+          />
+        </div>
+        <div>
+          <label class="block">Kategori</label>
+          <input
+            name="kategori"
+            id="kategori"
+            required
+            class="w-full p-2 border rounded"
+          />
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="block">Bagus</label>
+            <input
+              name="bagus"
+              id="bagus"
+              type="number"
+              min="0"
+              class="w-full p-2 border rounded"
+            />
+          </div>
+          <div>
+            <label class="block">Kurang</label>
+            <input
+              name="kurang"
+              id="kurang"
+              type="number"
+              min="0"
+              class="w-full p-2 border rounded"
+            />
+          </div>
+          <div>
+            <label class="block">Rusak</label>
+            <input
+              name="rusak"
+              id="rusak"
+              type="number"
+              min="0"
+              class="w-full p-2 border rounded"
+            />
+          </div>
+        </div>
+        <div>
+          <label class="block">Keterangan</label>
+          <textarea
+            name="keterangan"
+            id="keterangan"
+            class="w-full p-2 border rounded"
+          ></textarea>
+        </div>
+        <div>
+          <button
+            type="submit"
+            class="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600"
+          >
+            Simpan Perubahan
+          </button>
+        </div>
+      </form>
+      <p id="statusMsg" class="mt-4 text-center text-sm text-gray-700"></p>
+    </div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const nomor = urlParams.get("no");
+      const GET_URL =
+        "https://opensheet.elk.sh/1DGkbjItvUBa6gGnwe16W4z_PcQMwAAdK8HB6pHgtxF4/Sheet1"; // Ganti!
+      const UPDATE_URL =
+        "https://script.google.com/macros/s/AKfycbwwEsayDxCPhTtoMzNJ4FtKq2oyNHRyof_dVoJ-VG2Fkaw4Rlee6P3LcefBfJ3Q4lYEEg/exec"; // Ganti!
+
+      async function loadData() {
+        try {
+          const res = await fetch(GET_URL);
+          const rows = await res.json();
+          const item = rows.find((row) => row["No"] === nomor);
+          if (!item) throw new Error("Data tidak ditemukan.");
+
+          document.getElementById("no").value = item["No"];
+          document.getElementById("namaBarang").value = item["Nama Barang"];
+          document.getElementById("kategori").value = item["Kategori"];
+          document.getElementById("bagus").value = item["Kondisi Bagus"];
+          document.getElementById("kurang").value = item["Kondisi Kurang"];
+          document.getElementById("rusak").value = item["Kondisi Rusak"];
+          document.getElementById("keterangan").value = item["Keterangan"];
+        } catch (err) {
+          document.getElementById("statusMsg").innerText =
+            "❌ Gagal memuat data.";
+          console.error(err);
+        }
+      }
+
+      document
+        .getElementById("editForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const form = e.target;
+          const data = {
+            no: form.no.value,
+            namaBarang: form.namaBarang.value,
+            kategori: form.kategori.value,
+            bagus: +form.bagus.value,
+            kurang: +form.kurang.value,
+            rusak: +form.rusak.value,
+            total: +form.bagus.value + +form.kurang.value + +form.rusak.value,
+            keterangan: form.keterangan.value,
+          };
+
+          const formData = new URLSearchParams();
+          formData.append("data", JSON.stringify(data));
+          formData.append("sheet", "Sheet1");
+
+          try {
+            const res = await fetch(UPDATE_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: formData.toString(),
+            });
+            const result = await res.text();
+            document.getElementById("statusMsg").innerText =
+              "✅ Data berhasil diperbarui!";
+          } catch (err) {
+            document.getElementById("statusMsg").innerText =
+              "❌ Gagal memperbarui data.";
+            console.error(err);
+          }
+        });
+
+      loadData();
+    </script>
+  </body>
+</html>
