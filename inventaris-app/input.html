@@ -9,9 +9,15 @@
   <body class="bg-gray-50 min-h-screen py-10 px-4">
     <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
       <h1 class="text-2xl font-bold mb-4 text-center">📝 Input Data Barang</h1>
-      <form id="barangForm" class="space-y-4">
+
+      <form
+        id="barangForm"
+        action="https://script.google.com/macros/s/AKfycbzk4nYKKYSPa7Z9_ZWkXYpHmnCAtV1D4sTCMFOUSOy4drAroIz-gLrzFGRLaeot3az6uA/exec"
+        method="POST"
+        class="space-y-4"
+      >
         <div>
-          <label class="block font-medium">Nama Barang</label>
+          <label class="block font-medium">Nama Barang *</label>
           <input
             name="namaBarang"
             required
@@ -20,7 +26,7 @@
           />
         </div>
         <div>
-          <label class="block font-medium">Kategori</label>
+          <label class="block font-medium">Kategori *</label>
           <input
             name="kategori"
             required
@@ -37,6 +43,7 @@
               type="number"
               min="0"
               value="0"
+              onchange="updateTotal()"
             />
           </div>
           <div>
@@ -47,6 +54,7 @@
               type="number"
               min="0"
               value="0"
+              onchange="updateTotal()"
             />
           </div>
           <div>
@@ -57,20 +65,39 @@
               type="number"
               min="0"
               value="0"
+              onchange="updateTotal()"
             />
           </div>
         </div>
+        <input type="hidden" name="total" id="totalHidden" value="0" />
+
         <div>
           <label class="block font-medium">Keterangan</label>
           <textarea
             name="keterangan"
             class="w-full p-2 border rounded"
+            placeholder="Keterangan tambahan..."
           ></textarea>
         </div>
+
+        <!-- Info untuk upload foto -->
+        <div class="bg-blue-50 p-4 rounded border border-blue-200">
+          <h3 class="font-medium text-blue-800 mb-2">📷 Cara Upload Foto:</h3>
+          <ol class="text-sm text-blue-700 space-y-1">
+            <li>1. Klik tombol "Kirim" untuk menyimpan data</li>
+            <li>2. Setelah berhasil, akan muncul link folder Google Drive</li>
+            <li>3. Klik link tersebut untuk upload foto barang</li>
+            <li>
+              4. Di HP: bisa langsung foto dari kamera atau pilih dari galeri
+            </li>
+          </ol>
+        </div>
+
         <div>
           <button
             type="submit"
-            class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+            class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+            id="submitBtn"
           >
             Kirim
           </button>
@@ -80,40 +107,35 @@
     </div>
 
     <script>
-      const scriptURL =
-        "https://script.google.com/macros/s/AKfycbwwEsayDxCPhTtoMzNJ4FtKq2oyNHRyof_dVoJ-VG2Fkaw4Rlee6P3LcefBfJ3Q4lYEEg/exec"; // Ganti dengan Apps Script Web App URL kamu
+      function updateTotal() {
+        const bagus =
+          parseInt(document.querySelector('[name="bagus"]').value) || 0;
+        const kurang =
+          parseInt(document.querySelector('[name="kurang"]').value) || 0;
+        const rusak =
+          parseInt(document.querySelector('[name="rusak"]').value) || 0;
+        const total = bagus + kurang + rusak;
+        document.getElementById("totalHidden").value = total;
+      }
 
       document
         .getElementById("barangForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const form = e.target;
-          const data = {
-            namaBarang: form.namaBarang.value,
-            kategori: form.kategori.value,
-            bagus: +form.bagus.value,
-            kurang: +form.kurang.value,
-            rusak: +form.rusak.value,
-            total: +form.bagus.value + +form.kurang.value + +form.rusak.value,
-            keterangan: form.keterangan.value,
-          };
+        .addEventListener("submit", function (e) {
+          const submitBtn = document.getElementById("submitBtn");
+          const statusMsg = document.getElementById("statusMsg");
 
-          try {
-            const res = await fetch(scriptURL, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(data),
-            });
-            const result = await res.text();
-            document.getElementById("statusMsg").innerText =
-              "✅ Data berhasil dikirim!";
-            form.reset();
-          } catch (err) {
-            document.getElementById("statusMsg").innerText =
-              "❌ Gagal mengirim data.";
-            console.error(err);
-          }
+          // Update total before submit
+          updateTotal();
+
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Mengirim...";
+          statusMsg.textContent = "Sedang memproses data...";
+
+          // Form akan submit secara normal ke Google Apps Script
         });
+
+      // Initialize total calculation
+      updateTotal();
     </script>
   </body>
 </html>

@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Barang Rongsokan</title>
-    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-100 min-h-screen">
@@ -13,15 +12,36 @@
         📦 Data Barang Rongsokan
       </h1>
 
-      <!-- Search Bar -->
-      <div class="mb-4 flex justify-between items-center">
+      <!-- Action buttons -->
+      <div
+        class="mb-4 flex flex-col sm:flex-row justify-between items-center gap-4"
+      >
         <input
           id="searchInput"
           type="text"
           placeholder="Cari nama atau kategori..."
-          class="w-full md:w-1/2 p-2 border rounded shadow-sm"
+          class="w-full sm:w-1/2 p-2 border rounded shadow-sm"
           oninput="renderTable()"
         />
+        <div class="flex gap-2">
+          <a
+            href="input.html"
+            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
+            ➕ Tambah Data
+          </a>
+          <button
+            onclick="fetchData()"
+            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            🔄 Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading indicator -->
+      <div id="loadingMsg" class="text-center text-gray-500 py-4">
+        Memuat data...
       </div>
 
       <!-- Table -->
@@ -38,6 +58,7 @@
               <th class="px-4 py-3">Total</th>
               <th class="px-4 py-3">Foto</th>
               <th class="px-4 py-3">Keterangan</th>
+              <th class="px-4 py-3">Aksi</th>
             </tr>
           </thead>
           <tbody id="dataTable" class="text-gray-700">
@@ -66,7 +87,6 @@
       </div>
     </div>
 
-    <!-- Script JS bisa kamu pisah nanti -->
     <script>
       const SHEET_URL =
         "https://opensheet.elk.sh/1DGkbjItvUBa6gGnwe16W4z_PcQMwAAdK8HB6pHgtxF4/Sheet1";
@@ -76,12 +96,16 @@
 
       async function fetchData() {
         try {
+          document.getElementById("loadingMsg").style.display = "block";
           const res = await fetch(SHEET_URL);
           const data = await res.json();
           allData = data;
+          document.getElementById("loadingMsg").style.display = "none";
           renderTable();
         } catch (error) {
           console.error("Gagal fetch data:", error);
+          document.getElementById("loadingMsg").innerHTML =
+            "❌ Gagal memuat data";
         }
       }
 
@@ -92,36 +116,62 @@
           .value.toLowerCase();
         const filtered = allData.filter(
           (row) =>
-            row["Nama Barang"].toLowerCase().includes(search) ||
-            row["Kategori"].toLowerCase().includes(search)
+            (row["Nama Barang"] &&
+              row["Nama Barang"].toLowerCase().includes(search)) ||
+            (row["Kategori"] && row["Kategori"].toLowerCase().includes(search))
         );
 
         const start = (currentPage - 1) * ROWS_PER_PAGE;
         const pageData = filtered.slice(start, start + ROWS_PER_PAGE);
 
-        table.innerHTML = pageData
-          .map(
-            (row) => `
-        <tr class="border-b">
-          <td class="px-4 py-2">${row["No"]}</td>
-          <td class="px-4 py-2">${row["Nama Barang"]}</td>
-          <td class="px-4 py-2">${row["Kategori"]}</td>
-          <td class="px-4 py-2">${row["Kondisi Bagus"]}</td>
-          <td class="px-4 py-2">${row["Kondisi Kurang"]}</td>
-          <td class="px-4 py-2">${row["Kondisi Rusak"]}</td>
-          <td class="px-4 py-2">${row["Total"]}</td>
-          <td class="px-4 py-2"><a href="${row["Foto Folder Link"]}" target="_blank" class="text-blue-500 underline">📁 Lihat</a></td>
-          <td class="px-4 py-2">${row["Keterangan"]}</td>
-        </tr>
-      `
-          )
-          .join("");
+        if (pageData.length === 0) {
+          table.innerHTML = `
+            <tr>
+              <td colspan="10" class="px-4 py-8 text-center text-gray-500">
+                ${
+                  allData.length === 0
+                    ? "Belum ada data"
+                    : "Tidak ada data yang sesuai pencarian"
+                }
+              </td>
+            </tr>
+          `;
+        } else {
+          table.innerHTML = pageData
+            .map(
+              (row) => `
+          <tr class="border-b hover:bg-gray-50">
+            <td class="px-4 py-2">${row["No"] || "-"}</td>
+            <td class="px-4 py-2">${row["Nama Barang"] || "-"}</td>
+            <td class="px-4 py-2">${row["Kategori"] || "-"}</td>
+            <td class="px-4 py-2">${row["Kondisi Bagus"] || 0}</td>
+            <td class="px-4 py-2">${row["Kondisi Kurang"] || 0}</td>
+            <td class="px-4 py-2">${row["Kondisi Rusak"] || 0}</td>
+            <td class="px-4 py-2 font-bold">${row["Total"] || 0}</td>
+            <td class="px-4 py-2">
+              ${
+                row["Foto Folder Link"]
+                  ? `<a href="${row["Foto Folder Link"]}" target="_blank" class="text-blue-500 underline hover:text-blue-700">📁 Lihat</a>`
+                  : '<span class="text-gray-400">Tidak ada</span>'
+              }
+            </td>
+            <td class="px-4 py-2">${row["Keterangan"] || "-"}</td>
+            <td class="px-4 py-2">
+              <a href="edit.html?no=${row["No"]}" 
+                 class="bg-yellow-500 text-white px-2 py-1 rounded text-xs hover:bg-yellow-600 inline-block">
+                ✏️ Edit
+              </a>
+            </td>
+          </tr>
+        `
+            )
+            .join("");
+        }
 
+        const totalPages = Math.ceil(filtered.length / ROWS_PER_PAGE);
         document.getElementById(
           "pageInfo"
-        ).innerText = `Halaman ${currentPage} dari ${Math.ceil(
-          filtered.length / ROWS_PER_PAGE
-        )}`;
+        ).innerText = `Halaman ${currentPage} dari ${totalPages || 1}`;
         document.getElementById("prevBtn").disabled = currentPage === 1;
         document.getElementById("nextBtn").disabled =
           start + ROWS_PER_PAGE >= filtered.length;
@@ -135,12 +185,23 @@
       }
 
       function nextPage() {
-        if (currentPage * ROWS_PER_PAGE < allData.length) {
+        const search = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const filtered = allData.filter(
+          (row) =>
+            (row["Nama Barang"] &&
+              row["Nama Barang"].toLowerCase().includes(search)) ||
+            (row["Kategori"] && row["Kategori"].toLowerCase().includes(search))
+        );
+
+        if (currentPage * ROWS_PER_PAGE < filtered.length) {
           currentPage++;
           renderTable();
         }
       }
 
+      // Load data saat halaman dimuat
       fetchData();
     </script>
   </body>

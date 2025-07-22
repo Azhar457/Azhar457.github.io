@@ -9,7 +9,13 @@
   <body class="bg-gray-100 py-10 px-4">
     <div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
       <h2 class="text-2xl font-bold mb-4 text-center">✏️ Edit Data Barang</h2>
-      <form id="editForm" class="space-y-4">
+
+      <form
+        id="editForm"
+        action="https://script.google.com/macros/s/AKfycbzk4nYKKYSPa7Z9_ZWkXYpHmnCAtV1D4sTCMFOUSOy4drAroIz-gLrzFGRLaeot3az6uA/exec"
+        method="POST"
+        class="space-y-4"
+      >
         <div>
           <label class="block">Nomor (No)</label>
           <input
@@ -47,6 +53,7 @@
               type="number"
               min="0"
               class="w-full p-2 border rounded"
+              onchange="updateTotal()"
             />
           </div>
           <div>
@@ -57,6 +64,7 @@
               type="number"
               min="0"
               class="w-full p-2 border rounded"
+              onchange="updateTotal()"
             />
           </div>
           <div>
@@ -67,7 +75,29 @@
               type="number"
               min="0"
               class="w-full p-2 border rounded"
+              onchange="updateTotal()"
             />
+          </div>
+        </div>
+        <input type="hidden" name="total" id="totalHidden" />
+        <input type="hidden" name="fotoFolderLink" id="fotoFolderLinkHidden" />
+
+        <div>
+          <label class="block">Folder Foto</label>
+          <div class="flex items-center space-x-2">
+            <input
+              id="fotoFolderDisplay"
+              readonly
+              class="flex-1 p-2 border rounded bg-gray-100"
+            />
+            <a
+              id="fotoLink"
+              href="#"
+              target="_blank"
+              class="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              📁 Buka
+            </a>
           </div>
         </div>
         <div>
@@ -81,7 +111,8 @@
         <div>
           <button
             type="submit"
-            class="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600"
+            id="submitBtn"
+            class="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 disabled:opacity-50"
           >
             Simpan Perubahan
           </button>
@@ -94,68 +125,109 @@
       const urlParams = new URLSearchParams(window.location.search);
       const nomor = urlParams.get("no");
       const GET_URL =
-        "https://opensheet.elk.sh/1DGkbjItvUBa6gGnwe16W4z_PcQMwAAdK8HB6pHgtxF4/Sheet1"; // Ganti!
-      const UPDATE_URL =
-        "https://script.google.com/macros/s/AKfycbwwEsayDxCPhTtoMzNJ4FtKq2oyNHRyof_dVoJ-VG2Fkaw4Rlee6P3LcefBfJ3Q4lYEEg/exec"; // Ganti!
+        "https://script.google.com/macros/s/AKfycbzk4nYKKYSPa7Z9_ZWkXYpHmnCAtV1D4sTCMFOUSOy4drAroIz-gLrzFGRLaeot3az6uA/exec?action=getData";
 
-      async function loadData() {
+      function updateTotal() {
+        const bagus = parseInt(document.getElementById("bagus").value) || 0;
+        const kurang = parseInt(document.getElementById("kurang").value) || 0;
+        const rusak = parseInt(document.getElementById("rusak").value) || 0;
+        const total = bagus + kurang + rusak;
+        document.getElementById("totalHidden").value = total;
+      }
+
+      function loadData() {
         try {
-          const res = await fetch(GET_URL);
-          const rows = await res.json();
-          const item = rows.find((row) => row["No"] === nomor);
-          if (!item) throw new Error("Data tidak ditemukan.");
+          // Generate unique callback name
+          const callbackName = "handleData_" + Date.now();
 
-          document.getElementById("no").value = item["No"];
-          document.getElementById("namaBarang").value = item["Nama Barang"];
-          document.getElementById("kategori").value = item["Kategori"];
-          document.getElementById("bagus").value = item["Kondisi Bagus"];
-          document.getElementById("kurang").value = item["Kondisi Kurang"];
-          document.getElementById("rusak").value = item["Kondisi Rusak"];
-          document.getElementById("keterangan").value = item["Keterangan"];
+          // Create callback function
+          window[callbackName] = function (rows) {
+            try {
+              const item = rows.find(
+                (row) => String(row["No"]) === String(nomor)
+              );
+
+              if (!item) throw new Error("Data tidak ditemukan.");
+
+              document.getElementById("no").value = item["No"];
+              document.getElementById("namaBarang").value =
+                item["Nama Barang"] || "";
+              document.getElementById("kategori").value =
+                item["Kategori"] || "";
+              document.getElementById("bagus").value =
+                item["Kondisi Bagus"] || 0;
+              document.getElementById("kurang").value =
+                item["Kondisi Kurang"] || 0;
+              document.getElementById("rusak").value =
+                item["Kondisi Rusak"] || 0;
+              document.getElementById("keterangan").value =
+                item["Keterangan"] || "";
+
+              const fotoLink = item["Foto Folder Link"];
+              if (fotoLink) {
+                document.getElementById("fotoFolderDisplay").value = fotoLink;
+                document.getElementById("fotoFolderLinkHidden").value =
+                  fotoLink;
+                document.getElementById("fotoLink").href = fotoLink;
+              }
+
+              updateTotal();
+              document.getElementById("statusMsg").innerText =
+                "✅ Data berhasil dimuat";
+
+              // Cleanup callback
+              delete window[callbackName];
+            } catch (err) {
+              document.getElementById("statusMsg").innerText =
+                "❌ Gagal memuat data: " + err.message;
+              delete window[callbackName];
+            }
+          };
+
+          // Load data using JSONP
+          const script = document.createElement("script");
+          script.src = GET_URL + "&callback=" + callbackName;
+          script.onerror = function () {
+            document.getElementById("statusMsg").innerText =
+              "❌ Gagal memuat data dari server";
+            delete window[callbackName];
+          };
+          document.head.appendChild(script);
+
+          // Remove script after loading
+          setTimeout(() => {
+            if (script.parentNode) {
+              script.parentNode.removeChild(script);
+            }
+          }, 5000);
         } catch (err) {
           document.getElementById("statusMsg").innerText =
-            "❌ Gagal memuat data.";
+            "❌ Gagal memuat data: " + err.message;
           console.error(err);
         }
       }
 
       document
         .getElementById("editForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const form = e.target;
-          const data = {
-            no: form.no.value,
-            namaBarang: form.namaBarang.value,
-            kategori: form.kategori.value,
-            bagus: +form.bagus.value,
-            kurang: +form.kurang.value,
-            rusak: +form.rusak.value,
-            total: +form.bagus.value + +form.kurang.value + +form.rusak.value,
-            keterangan: form.keterangan.value,
-          };
+        .addEventListener("submit", function (e) {
+          const submitBtn = document.getElementById("submitBtn");
+          const statusMsg = document.getElementById("statusMsg");
 
-          const formData = new URLSearchParams();
-          formData.append("data", JSON.stringify(data));
-          formData.append("sheet", "Sheet1");
+          updateTotal();
 
-          try {
-            const res = await fetch(UPDATE_URL, {
-              method: "POST",
-              headers: { "Content-Type": "application/x-www-form-urlencoded" },
-              body: formData.toString(),
-            });
-            const result = await res.text();
-            document.getElementById("statusMsg").innerText =
-              "✅ Data berhasil diperbarui!";
-          } catch (err) {
-            document.getElementById("statusMsg").innerText =
-              "❌ Gagal memperbarui data.";
-            console.error(err);
-          }
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Menyimpan...";
+          statusMsg.textContent = "Sedang memproses...";
         });
 
-      loadData();
+      // Load data saat halaman dimuat
+      if (nomor) {
+        document.getElementById("statusMsg").textContent = "Memuat data...";
+        loadData();
+      } else {
+        document.getElementById("statusMsg").textContent =
+          "❌ Nomor data tidak ditemukan di URL. Pastikan URL berisi ?no=123";
+      }
     </script>
   </body>
 </html>
