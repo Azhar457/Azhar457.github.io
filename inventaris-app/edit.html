@@ -8,26 +8,31 @@
   </head>
   <body class="bg-gray-100 py-10 px-4">
     <div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
-      <h2 class="text-2xl font-bold mb-4 text-center">✏️ Edit Data Barang</h2>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl font-bold text-center">✏️ Edit Data Barang</h2>
+        <a href="index.html" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+          ← Kembali
+        </a>
+      </div>
 
       <form
         id="editForm"
-        action="https://script.google.com/macros/s/AKfycbzk4nYKKYSPa7Z9_ZWkXYpHmnCAtV1D4sTCMFOUSOy4drAroIz-gLrzFGRLaeot3az6uA/exec"
+        action="https://script.google.com/macros/s/AKfycbwbByukB7Xe7UpmDE400y9ATPY_B2PjvyRbnfXoMQaI5fZC8ejfSGIHknRv4sV7aQ0xmg/exec"
         method="POST"
         class="space-y-4"
       >
         <div>
-          <label class="block">Nomor (No)</label>
+          <label class="block font-medium">Email Address</label>
           <input
-            name="no"
-            id="no"
-            type="number"
+            name="email"
+            id="email"
+            type="email"
             readonly
             class="w-full p-2 border rounded bg-gray-100"
           />
         </div>
         <div>
-          <label class="block">Nama Barang</label>
+          <label class="block font-medium">Nama Barang *</label>
           <input
             name="namaBarang"
             id="namaBarang"
@@ -36,7 +41,7 @@
           />
         </div>
         <div>
-          <label class="block">Kategori</label>
+          <label class="block font-medium">Kategori *</label>
           <input
             name="kategori"
             id="kategori"
@@ -44,10 +49,108 @@
             class="w-full p-2 border rounded"
           />
         </div>
+        
         <div class="grid grid-cols-3 gap-4">
           <div>
-            <label class="block">Bagus</label>
+            <label class="block font-medium">Jumlah Kondisi Bagus</label>
             <input
+              name="bagus"
+              id="bagus"
+              type="number"
+              min="0"
+              class="w-full p-2 border rounded"
+              onchange="updateTotal()"
+            />
+          </div>
+          <div>
+            <label class="block font-medium">Jumlah Kondisi Kurang</label>
+            <input
+              name="kurang"
+              id="kurang"
+              type="number"
+              min="0"
+              class="w-full p-2 border rounded"
+              onchange="updateTotal()"
+            />
+          </div>
+          <div>
+            <label class="block font-medium">Jumlah Kondisi Rusak</label>
+            <input
+              name="rusak"
+              id="rusak"
+              type="number"
+              min="0"
+              class="w-full p-2 border rounded"
+              onchange="updateTotal()"
+            />
+          </div>
+        </div>
+        
+        <div class="bg-blue-50 p-3 rounded">
+          <p class="text-sm text-blue-800 font-medium">Total Barang: <span id="totalDisplay">0</span> pcs</p>
+        </div>
+
+        <div>
+          <label class="block font-medium">Foto Barang</label>
+          <div class="flex items-center space-x-2">
+            <input
+              id="fotoDisplay"
+              readonly
+              class="flex-1 p-2 border rounded bg-gray-100 text-sm"
+              placeholder="Link foto dari form"
+            />
+            <a
+              id="fotoLink"
+              href="#"
+              target="_blank"
+              class="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+            >
+              🖼️ Lihat
+            </a>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-medium">Harga Taksir (Rp)</label>
+            <input
+              name="hargaTaksir"
+              id="hargaTaksir"
+              type="number"
+              min="0"
+              class="w-full p-2 border rounded"
+              placeholder="Contoh: 25000"
+            />
+            <small class="text-gray-500 text-xs">Format: 25000 ✅ Bukan 25.000 ❌</small>
+          </div>
+          <div>
+            <label class="block font-medium">Harga (Opsional)</label>
+            <input
+              name="harga"
+              id="harga"
+              type="number"
+              min="0"
+              class="w-full p-2 border rounded"
+              placeholder="Harga final (opsional)"
+            />
+          </div>
+        </div>
+        
+        <div>
+          <button
+            type="submit"
+            id="submitBtn"
+            class="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 disabled:opacity-50"
+          >
+            💾 Simpan Perubahan
+          </button>
+        </div>
+        
+        <!-- Hidden fields for form submission -->
+        <input type="hidden" name="rowIndex" id="rowIndexHidden" />
+      </form>
+      <p id="statusMsg" class="mt-4 text-center text-sm text-gray-700"></p>
+    </div>
               name="bagus"
               id="bagus"
               type="number"
@@ -124,62 +227,55 @@
     <script>
       const urlParams = new URLSearchParams(window.location.search);
       const nomor = urlParams.get("no");
-      const GET_URL =
-        "https://script.google.com/macros/s/AKfycbzk4nYKKYSPa7Z9_ZWkXYpHmnCAtV1D4sTCMFOUSOy4drAroIz-gLrzFGRLaeot3az6uA/exec?action=getData";
+      const GET_URL = "https://script.google.com/macros/s/AKfycbwbByukB7Xe7UpmDE400y9ATPY_B2PjvyRbnfXoMQaI5fZC8ejfSGIHknRv4sV7aQ0xmg/exec?action=getData";
 
       function updateTotal() {
         const bagus = parseInt(document.getElementById("bagus").value) || 0;
         const kurang = parseInt(document.getElementById("kurang").value) || 0;
         const rusak = parseInt(document.getElementById("rusak").value) || 0;
         const total = bagus + kurang + rusak;
-        document.getElementById("totalHidden").value = total;
+        document.getElementById("totalDisplay").textContent = total;
       }
 
       function loadData() {
         try {
           // Generate unique callback name
-          const callbackName = "handleData_" + Date.now();
-
+          const callbackName = 'handleData_' + Date.now();
+          
           // Create callback function
-          window[callbackName] = function (rows) {
+          window[callbackName] = function(rows) {
             try {
-              const item = rows.find(
-                (row) => String(row["No"]) === String(nomor)
-              );
-
+              // Find item by row number (since form doesn't have "No" field)
+              const item = rows[parseInt(nomor) - 1]; // Assuming nomor is the row index
+              
               if (!item) throw new Error("Data tidak ditemukan.");
 
-              document.getElementById("no").value = item["No"];
-              document.getElementById("namaBarang").value =
-                item["Nama Barang"] || "";
-              document.getElementById("kategori").value =
-                item["Kategori"] || "";
-              document.getElementById("bagus").value =
-                item["Kondisi Bagus"] || 0;
-              document.getElementById("kurang").value =
-                item["Kondisi Kurang"] || 0;
-              document.getElementById("rusak").value =
-                item["Kondisi Rusak"] || 0;
-              document.getElementById("keterangan").value =
-                item["Keterangan"] || "";
+              // Set hidden field for row index
+              document.getElementById("rowIndexHidden").value = nomor;
+              
+              document.getElementById("email").value = item["Email Address"] || "";
+              document.getElementById("namaBarang").value = item["Nama Barang"] || "";
+              document.getElementById("kategori").value = item["Kategori"] || "";
+              document.getElementById("bagus").value = item["Jumlah Kondisi Bagus"] || 0;
+              document.getElementById("kurang").value = item["Jumlah Kondisi Kurang"] || 0;
+              document.getElementById("rusak").value = item["Jumlah Kondisi Rusak"] || 0;
+              document.getElementById("hargaTaksir").value = item["Harga Taksir"] || "";
+              document.getElementById("harga").value = item["Harga"] || "";
 
-              const fotoLink = item["Foto Folder Link"];
-              if (fotoLink) {
-                document.getElementById("fotoFolderDisplay").value = fotoLink;
-                document.getElementById("fotoFolderLinkHidden").value =
-                  fotoLink;
-                document.getElementById("fotoLink").href = fotoLink;
+              const fotoUrl = item["Foto Barang"];
+              if (fotoUrl) {
+                document.getElementById("fotoDisplay").value = fotoUrl;
+                document.getElementById("fotoLink").href = fotoUrl;
               }
 
               updateTotal();
-              document.getElementById("statusMsg").innerText =
-                "✅ Data berhasil dimuat";
-
+              document.getElementById("statusMsg").innerText = "✅ Data berhasil dimuat";
+              
               // Cleanup callback
               delete window[callbackName];
+              
             } catch (err) {
-              document.getElementById("statusMsg").innerText =
-                "❌ Gagal memuat data: " + err.message;
+              document.getElementById("statusMsg").innerText = "❌ Gagal memuat data: " + err.message;
               delete window[callbackName];
             }
           };
@@ -187,46 +283,42 @@
           // Load data using JSONP
           const script = document.createElement("script");
           script.src = GET_URL + "&callback=" + callbackName;
-          script.onerror = function () {
-            document.getElementById("statusMsg").innerText =
-              "❌ Gagal memuat data dari server";
+          script.onerror = function() {
+            document.getElementById("statusMsg").innerText = "❌ Gagal memuat data dari server";
             delete window[callbackName];
           };
           document.head.appendChild(script);
-
+          
           // Remove script after loading
           setTimeout(() => {
             if (script.parentNode) {
               script.parentNode.removeChild(script);
             }
           }, 5000);
+          
         } catch (err) {
-          document.getElementById("statusMsg").innerText =
-            "❌ Gagal memuat data: " + err.message;
+          document.getElementById("statusMsg").innerText = "❌ Gagal memuat data: " + err.message;
           console.error(err);
         }
       }
 
-      document
-        .getElementById("editForm")
-        .addEventListener("submit", function (e) {
-          const submitBtn = document.getElementById("submitBtn");
-          const statusMsg = document.getElementById("statusMsg");
+      document.getElementById("editForm").addEventListener("submit", function(e) {
+        const submitBtn = document.getElementById("submitBtn");
+        const statusMsg = document.getElementById("statusMsg");
 
-          updateTotal();
+        updateTotal();
 
-          submitBtn.disabled = true;
-          submitBtn.textContent = "Menyimpan...";
-          statusMsg.textContent = "Sedang memproses...";
-        });
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Menyimpan...";
+        statusMsg.textContent = "Sedang memproses...";
+      });
 
       // Load data saat halaman dimuat
       if (nomor) {
         document.getElementById("statusMsg").textContent = "Memuat data...";
         loadData();
       } else {
-        document.getElementById("statusMsg").textContent =
-          "❌ Nomor data tidak ditemukan di URL. Pastikan URL berisi ?no=123";
+        document.getElementById("statusMsg").textContent = "❌ Nomor data tidak ditemukan di URL. Pastikan URL berisi ?no=123";
       }
     </script>
   </body>

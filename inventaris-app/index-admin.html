@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Barang Rongsokan - Toko Online</title>
+    <title>Admin - Barang Rongsokan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
@@ -11,47 +11,21 @@
     />
   </head>
   <body class="bg-gray-100 min-h-screen">
-    <!-- Customer Service Floating Button -->
-    <div id="csButton" class="fixed bottom-6 right-6 z-50">
-      <button
-        onclick="toggleCS()"
-        class="bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition-all duration-300"
-      >
-        <i class="fab fa-whatsapp text-2xl"></i>
-      </button>
-    </div>
-
-    <!-- Customer Service Panel -->
-    <div
-      id="csPanel"
-      class="fixed bottom-24 right-6 bg-white rounded-lg shadow-xl p-4 w-80 z-50 hidden"
-    >
-      <div class="flex justify-between items-center mb-3">
-        <h3 class="font-bold text-gray-800">💬 Customer Service</h3>
-        <button onclick="toggleCS()" class="text-gray-500 hover:text-gray-700">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="text-sm text-gray-600 mb-3">
-        <p>📞 WhatsApp: <strong>081803528486</strong></p>
-        <p>⏰ Jam Operasional: 08:00 - 17:00</p>
-      </div>
-      <a
-        href="https://wa.me/6281803528486?text=Halo, saya tertarik dengan barang rongsokan yang dijual"
-        target="_blank"
-        class="block w-full bg-green-500 text-white text-center py-2 rounded hover:bg-green-600"
-      >
-        💬 Chat WhatsApp
-      </a>
-    </div>
-
     <div class="max-w-7xl mx-auto px-4 py-8">
-      <h1 class="text-3xl font-bold mb-2 text-center text-gray-800">
-        🏪 Toko Barang Rongsokan
-      </h1>
-      <p class="text-center text-gray-600 mb-6">
-        Temukan barang berkualitas dengan harga terjangkau
-      </p>
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-800">
+            👨‍💼 Admin Panel - Barang Rongsokan
+          </h1>
+          <p class="text-gray-600">Kelola data barang rongsokan</p>
+        </div>
+        <a
+          href="index.html"
+          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          👁️ Lihat Public View
+        </a>
+      </div>
 
       <!-- Search & Filter -->
       <div
@@ -124,26 +98,9 @@
       const SHEET_URL =
         "https://opensheet.elk.sh/1DGkbjItvUBa6gGnwe16W4z_PcQMwAAdK8HB6pHgtxF4/Form%20Responses%201";
       const CARDS_PER_PAGE = 12;
-      const CS_PHONE = "6281803528486"; // WhatsApp number
       let currentPage = 1;
       let allData = [];
       let filteredData = [];
-
-      // Customer Service Functions
-      function toggleCS() {
-        const panel = document.getElementById("csPanel");
-        panel.classList.toggle("hidden");
-      }
-
-      function buyItem(namaBarang, hargaTaksir, harga) {
-        const message = `Halo, saya mau beli *${namaBarang}* dengan harga taksir *Rp ${formatPrice(
-          hargaTaksir
-        )}*${harga ? ` (harga: Rp ${formatPrice(harga)})` : ""}`;
-        const whatsappURL = `https://wa.me/${CS_PHONE}?text=${encodeURIComponent(
-          message
-        )}`;
-        window.open(whatsappURL, "_blank");
-      }
 
       function formatPrice(price) {
         if (!price) return "0";
@@ -266,7 +223,7 @@
         updatePagination();
       }
 
-      function createCard(item) {
+      function createCard(item, index) {
         const totalBarang =
           (parseInt(item["Jumlah Kondisi Bagus"]) || 0) +
           (parseInt(item["Jumlah Kondisi Kurang"]) || 0) +
@@ -280,6 +237,9 @@
         const directImageUrl = getDirectImageUrl(
           fotoUrl.split(",")[0]?.trim() || ""
         );
+
+        // Calculate the actual row index for edit
+        const rowIndex = allData.indexOf(item) + 1;
 
         return `
           <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
@@ -307,14 +267,14 @@
               <!-- Condition -->
               <div class="mb-3">
                 <p class="text-xs text-gray-600 mb-1">Kondisi Barang:</p>
-                <div class="flex gap-2 text-xs">
-                  <span class="bg-green-100 text-green-800 px-2 py-1 rounded">✅ Bagus: ${
+                <div class="flex gap-1 text-xs flex-wrap">
+                  <span class="bg-green-100 text-green-800 px-2 py-1 rounded">✅ ${
                     item["Jumlah Kondisi Bagus"] || 0
                   }</span>
-                  <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">⚠️ Kurang: ${
+                  <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">⚠️ ${
                     item["Jumlah Kondisi Kurang"] || 0
                   }</span>
-                  <span class="bg-red-100 text-red-800 px-2 py-1 rounded">❌ Rusak: ${
+                  <span class="bg-red-100 text-red-800 px-2 py-1 rounded">❌ ${
                     item["Jumlah Kondisi Rusak"] || 0
                   }</span>
                 </div>
@@ -342,23 +302,17 @@
                 }
               </div>
               
-              <!-- Actions -->
-              <div class="flex gap-2">
-                ${
-                  hargaTaksir > 0
-                    ? `
-                  <button onclick="buyItem('${item["Nama Barang"]}', '${hargaTaksir}', '${harga}')" 
-                          class="flex-1 bg-green-500 text-white py-2 px-3 rounded-lg hover:bg-green-600 transition-colors text-sm font-medium">
-                    💬 Beli via WA
-                  </button>
-                `
-                    : `
-                  <button onclick="buyItem('${item["Nama Barang"]}', '', '')" 
-                          class="flex-1 bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium">
-                    💬 Tanya Harga
-                  </button>
-                `
-                }
+              <!-- Admin Actions -->
+              <div class="space-y-2">
+                <a href="edit.html?nama=${encodeURIComponent(
+                  item["Nama Barang"]
+                )}" 
+                   class="w-full bg-yellow-500 text-white py-2 px-3 rounded-lg hover:bg-yellow-600 transition-colors text-sm text-center block">
+                  ✏️ Edit Barang
+                </a>
+                <div class="text-xs text-gray-500 text-center">
+                  Row: ${rowIndex} | Email: ${item["Email Address"] || "N/A"}
+                </div>
               </div>
             </div>
           </div>
@@ -390,19 +344,6 @@
           window.scrollTo(0, 0);
         }
       }
-
-      // Close CS panel when clicking outside
-      document.addEventListener("click", function (event) {
-        const csButton = document.getElementById("csButton");
-        const csPanel = document.getElementById("csPanel");
-
-        if (
-          !csButton.contains(event.target) &&
-          !csPanel.contains(event.target)
-        ) {
-          csPanel.classList.add("hidden");
-        }
-      });
 
       // Load data saat halaman dimuat
       fetchData();
